@@ -1,0 +1,17 @@
+{
+  "name": "dp700-pack-tools",
+  "private": true,
+  "type": "module",
+  "description": "Dev-only tooling: local server, screenshots, OG image, font subsetting, video render. Never deployed.",
+  "scripts": {
+    "serve": "node serve.mjs",
+    "shoot": "node shoot.mjs",
+    "fonts": "node fonts.mjs",
+    "og": "node og.mjs",
+    "record": "node record.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0",
+    "subset-font": "^2.9.0"
+  }
+}

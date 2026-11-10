@@ -1,0 +1,15 @@
+# Cloudflare Pages headers.
+# HTML is revalidated on every visit; static assets are cached for a week
+# (file names are not hashed, so not "immutable").
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/assets/*
+  Cache-Control: public, max-age=604800
+
+/css/*
+  Cache-Control: public, max-age=3600
+
+/js/*
+  Cache-Control: public, max-age=3600

@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>DP-700 · Card Pack · Juan Mallo</title>
+  <meta name="description" content="Tear open a holographic booster pack celebrating the Microsoft Certified: Fabric Data Engineer Associate (exam DP-700).">
+  <!-- Link previews (LinkedIn, X, Slack…). Absolute URLs: crawlers need them. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DP-700 Card Pack">
+  <meta property="og:title" content="DP-700 · Card Pack · Juan Mallo">
+  <meta property="og:description" content="I passed DP-700, Microsoft Certified: Fabric Data Engineer Associate. Tear open the pack and pull all five holo cards.">
+  <meta property="og:url" content="https://dp700-pack.pages.dev/">
+  <meta property="og:image" content="https://dp700-pack.pages.dev/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A holographic Microsoft Certified Associate badge card next to four creature cards in red, green, blue and yellow.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DP-700 · Card Pack · Juan Mallo">
+  <meta name="twitter:description" content="Tear open the pack and pull all five holo cards.">
+  <meta name="twitter:image" content="https://dp700-pack.pages.dev/assets/og.png">
+  <link rel="canonical" href="https://dp700-pack.pages.dev/">
+  <meta name="theme-color" content="#040b18">
+  <meta name="color-scheme" content="dark">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/IBMPlexMono-Medium-Latin1.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/pack.css">
+  <link rel="stylesheet" href="css/card.css">
+  <link rel="stylesheet" href="css/foil.css">
+  <!-- Mode flags are set before first paint so auto/capture never flash UI hints. -->
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search), c = document.documentElement.classList;
+      if (q.has('auto')) c.add('is-auto');
+      if (q.has('capture')) c.add('is-auto', 'is-capture');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches && !q.has('auto')) c.add('is-reduced');
+
+      // Layout: stack the badge above the 2×2 grid only when that gives cards
+      // at least ~85% as big as side by side (mirrors the sizes in base.css).
+      function layout() {
+        var w = innerWidth, h = innerHeight, vmin = Math.min(w, h) / 100, R = .7159;
+        var pad = Math.min(48, Math.max(16, 3.5 * vmin)), g = Math.min(28, Math.max(10, 2.2 * vmin));
+        var footSide = w <= 1240 ? 146 : 96, footStack = w <= 480 ? 120 : 150;
+        var side = .86 * Math.min(h - 2 * pad - footSide, (w - 2 * pad - 5 * g) / (2 * R));
+        var stack = .9 * Math.min((h - 2 * pad - footStack - 4 * g) / 2, (w - 2 * pad) / R);
+        c.toggle('is-stack', stack >= .85 * side);
+      }
+      layout();
+      addEventListener('resize', layout);
+    })();
+  </script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <main class="stage" id="stage">
+    <h1 class="sr-only">DP-700 card pack: Microsoft Certified Fabric Data Engineer Associate</h1>
+
+    <!-- ───────────── Sealed pack ───────────── -->
+    <div class="pack-wrap" id="packWrap">
+      <div class="pack-shadow" aria-hidden="true"></div>
+      <p class="hint" id="hint" aria-hidden="true">Tear here <span class="hint__arrow">→</span></p>
+
+      <div class="pack" id="pack" role="button" tabindex="0"
+           aria-label="Open the DP-700 card pack, 5 cards. Drag across the top strip, click, or press Enter.">
+        <div class="pack__float">
+          <div class="pack__tilt tiltable" id="packTilt">
+
+            <!-- Thickness: a back face and two side gussets in their own 3D group.
+                 It shares the front's tilt; keeping it separate lets the front stay
+                 flat 2D, so the curling strip is never clipped by 3D sorting. -->
+            <div class="pack__shell" aria-hidden="true">
+              <div class="pack__back"></div>
+              <div class="pack__side pack__side--l"></div>
+              <div class="pack__side pack__side--r"></div>
+            </div>
+
+            <div class="pack__front">
+            <!-- Front: everything below the tear line. -->
+            <div class="pack__body">
+              <div class="pack__bg"></div>
+
+              <!-- Crest: an oversized shield with the badge's proportions and two
+                   white stars, tilted and bleeding off the edges. Blue, like the badge,
+                   against the teal wrapper. Drawn by us, not the badge artwork. -->
+              <svg class="pack__crest" viewBox="0 0 180 262" aria-hidden="true">
+                <defs>
+                  <linearGradient id="crestFill" x1="0" y1="0" x2=".35" y2="1">
+                    <stop offset="0" stop-color="#2a8ae0"/>
+                    <stop offset=".45" stop-color="#0064b5"/>
+                    <stop offset="1" stop-color="#002a66"/>
+                  </linearGradient>
+                </defs>
+                <path class="crest__shield" d="M90 2 172 26.5Q178 28.5 178 35V170C178 222 90 259 90 259S2 222 2 170V35Q2 28.5 8 26.5Z"/>
+                <path class="crest__inner" d="M90 14 165 36.3V169C165 212 90 245 90 245S15 212 15 169V36.3Z"/>
+                <use href="#star" class="crest__star" x="28" y="112" width="58" height="58"/>
+                <use href="#star" class="crest__star" x="94" y="112" width="58" height="58"/>
+              </svg>
+
+              <div class="pack__topo"></div><!-- "OneLake": contour lines in holo foil -->
+
+              <div class="pack__content">
+                <p class="pack__code">DP-700</p>
+                <p class="pack__name">Fabric Data Engineer</p>
+                <dl class="pack__manifest">
+                  <div><dt>series</dt><dd>2026</dd></div>
+                  <div><dt>contents</dt><dd>5 cards</dd></div>
+                </dl>
+              </div>
+
+              <div class="pack__crimp pack__crimp--bottom"></div>
+              <div class="pack__pillow"></div><!-- puffy shading: the pack looks filled -->
+              <div class="foil foil--pack"></div>
+              <div class="glitter"></div>
+              <div class="glare"></div>
+            </div>
+
+            <!-- The strip that tears off (a flat, sealed crimp). js/strip.js fills
+                 it with a chain of slices so it curls as it peels. -->
+            <div class="pack__strip" aria-hidden="true">
+              <div class="pack__tearline"></div>
+            </div>
+            </div><!-- /pack__front -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── The cards ───────────── -->
+    <section class="spread" id="spread" aria-label="Your 5 cards" inert>
+      <div class="backdrop" id="backdrop"></div>
+      <ol class="cards" id="cards">
+
+        <!-- 1 · Badge card (ultra rare) -->
+        <li class="slot slot--badge" data-slot="0" data-face-up>
+<div class="fly">          <div class="reveal-glow" aria-hidden="true"></div>
+          <article class="card card--badge" aria-labelledby="c1-title">
+            <div class="card__tilt tiltable">
+              <div class="card__face">
+                <div class="card__frame card__frame--holo"></div>
+                <!-- Full-art ultra rare: the badge fills the card, the text sits on a
+                     glass panel, and the holo covers everything. -->
+                <div class="ultra">
+                  <div class="ultra__etch"></div>
+                  <header class="card__top">
+                    <span class="rarity rarity--ultra"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#star"/></svg>Ultra rare</span>
+                    <span class="card__no">No. 1/5</span>
+                  </header>
+
+                  <div class="ultra__art">
+                    <div class="ultra__halo"></div>
+                    <img src="assets/associate.svg" alt="Microsoft Certified Associate badge" width="300" height="300" decoding="sync">
+                  </div>
+
+                  <div class="ultra__panel">
+                    <h2 class="card__title" id="c1-title">
+                      <span class="card__eyebrow">Microsoft Certified:</span>
+                      Fabric Data Engineer Associate
+                    </h2>
+                    <p class="card__meta">Exam DP-700 <i>·</i> Juan Mallo <i>·</i> November 2026</p>
+                    <p class="card__flavour">Voucher by Aleksi · Fabric Forge</p>
+                    <footer class="card__bottom">
+                      <span>Series 2026</span>
+                      <span class="card__set">DP-700</span>
+                    </footer>
+                  </div>
+                </div>
+                <div class="foil foil--card foil--ultra"></div>
+                <div class="foil foil--bands foil--ultra-bands"></div>
+                <div class="glitter glitter--ultra"></div>
+                <div class="glare"></div>
+                <div class="card__shine"></div>
+              </div>
+              <div class="card__back" aria-hidden="true"><div class="back__topo"></div><div class="back__line"></div><div class="back__mark"><svg class="back__shield" viewBox="0 0 180 262"><use href="#crest"/></svg><span class="back__code">DP-700</span><span class="back__series">Series 2026</span></div></div>
+            </div>
+            <button class="card__hit" type="button" aria-expanded="false"
+                    aria-label="Zoom the card: Microsoft Certified Fabric Data Engineer Associate"></button>
+          </article>
+        </div></li>
+
+        <!-- 2–5 · Colour cards (generated by tools/cards-src/build-cards.py). In the
+             2×2 grid they sit in the Microsoft logo order: red, green / blue, yellow. -->
+        <li class="slot slot--red" data-slot="1" data-face-up><div class="fly">
+          <article class="card card--mon card--warden" aria-labelledby="c2-title" style="--c-light:#ff9b73;--c:#f25022;--c-dark:#b8340f;--c-ink:#5c1503;--art-y:22%">
+            <div class="card__tilt tiltable">
+              <div class="card__face">
+                <div class="card__frame"></div>
+                <div class="mon">
+                  <header class="mon__head">
+                    <p class="mon__stage"><span>Stage 1</span> Evolves from <em>Everyone Is Admin</em></p>
+                    <div class="mon__title">
+                      <h2 class="mon__name" id="c2-title">Pangard</h2>
+                      <p class="cu" aria-label="Exam weight: 30 to 35 percent"><small>CU</small><b>30–35</b><i>%</i></p>
+                      <span class="mon__type" title="Governance type"><svg class="type" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-governance"/></svg></span>
+                    </div>
+                  </header>
+                  <div class="mon__art">
+                    <img src="assets/art/warden.webp" alt="" width="1280" height="853" decoding="sync">
+                    <div class="foil foil--art"></div>
+                    <div class="glitter"></div>
+                    <div class="glare"></div>
+                  </div>
+                  <p class="mon__strip">Domain 1 · Implement and manage an analytics solution</p>
+                  <ul class="mon__attacks">
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 2 Governance"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-governance"/></svg></i><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-governance"/></svg></i></span>
+                    <strong class="attack__name">Row-Level Lockdown</strong>
+                    <p class="attack__text">Row-, column-, object- and file-level security: everyone sees only what they should. Dynamic data masking hides the rest.</p>
+                  </li>
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 1 Governance"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-governance"/></svg></i></span>
+                    <strong class="attack__name">Ship It Safely</strong>
+                    <p class="attack__text">Dev → test → prod with deployment pipelines, version control and database projects.</p>
+                  </li>
+                  </ul>
+                  <dl class="mon__stats">
+                    <div><dt>weakness</dt><dd>hardcoded secrets</dd></div>
+                    <div><dt>resistance</dt><dd>“can I get admin?”</dd></div>
+                    <div><dt>retreat</dt><dd aria-label="2 coffee"><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg></dd></div>
+                  </dl>
+                  <p class="mon__flavour">Nothing ships without a pipeline. Nothing opens without a role.</p>
+                  <footer class="mon__foot">
+                    <span>Illus. Juan Mallo · Gen-AI</span>
+                    <span class="mon__set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l5 10-5 10-5-10z"/></svg>Rare · 2/5</span>
+                  </footer>
+                </div>
+                <div class="glare glare--soft"></div>
+              </div>
+              <div class="card__back" aria-hidden="true"><div class="back__topo"></div><div class="back__line"></div><div class="back__mark"><svg class="back__shield" viewBox="0 0 180 262"><use href="#crest"/></svg><span class="back__code">DP-700</span><span class="back__series">Series 2026</span></div></div>
+            </div>
+            <button class="card__hit" type="button" aria-expanded="false" aria-label="Zoom the card: Pangard"></button>
+          </article>
+        </div></li>
+
+        <li class="slot slot--green" data-slot="2" data-face-up><div class="fly">
+          <article class="card card--mon card--pipewright" aria-labelledby="c3-title" style="--c-light:#c4ec6a;--c:#7fba00;--c-dark:#558000;--c-ink:#243700;--art-y:30%">
+            <div class="card__tilt tiltable">
+              <div class="card__face">
+                <div class="card__frame"></div>
+                <div class="mon">
+                  <header class="mon__head">
+                    <p class="mon__stage"><span>Stage 1</span> Evolves from <em>Cron Job</em></p>
+                    <div class="mon__title">
+                      <h2 class="mon__name" id="c3-title">Pipethon</h2>
+                      <p class="cu" aria-label="Exam weight: 30 to 35 percent"><small>CU</small><b>30–35</b><i>%</i></p>
+                      <span class="mon__type" title="Pipeline type"><svg class="type" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-pipeline"/></svg></span>
+                    </div>
+                  </header>
+                  <div class="mon__art">
+                    <img src="assets/art/pipewright.webp" alt="" width="1280" height="853" decoding="sync">
+                    <div class="foil foil--art"></div>
+                    <div class="glitter"></div>
+                    <div class="glare"></div>
+                  </div>
+                  <p class="mon__strip">Domain 2 · Ingest and transform data</p>
+                  <ul class="mon__attacks">
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 2 Pipeline"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-pipeline"/></svg></i><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-pipeline"/></svg></i></span>
+                    <strong class="attack__name">Incremental Load</strong>
+                    <p class="attack__text">Brings in only what changed. Full loads when it must, streaming loads when it can’t wait.</p>
+                  </li>
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 1 Pipeline"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-pipeline"/></svg></i></span>
+                    <strong class="attack__name">Late-Arriving Catch</strong>
+                    <p class="attack__text">Handles duplicate, missing and late-arriving data, then shapes it for a dimensional model.</p>
+                  </li>
+                  </ul>
+                  <dl class="mon__stats">
+                    <div><dt>weakness</dt><dd>schema drift</dd></div>
+                    <div><dt>resistance</dt><dd>messy CSVs</dd></div>
+                    <div><dt>retreat</dt><dd aria-label="1 coffee"><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg></dd></div>
+                  </dl>
+                  <p class="mon__flavour">Full or incremental, batch or stream: the data arrives.</p>
+                  <footer class="mon__foot">
+                    <span>Illus. Juan Mallo · Gen-AI</span>
+                    <span class="mon__set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l5 10-5 10-5-10z"/></svg>Rare · 3/5</span>
+                  </footer>
+                </div>
+                <div class="glare glare--soft"></div>
+              </div>
+              <div class="card__back" aria-hidden="true"><div class="back__topo"></div><div class="back__line"></div><div class="back__mark"><svg class="back__shield" viewBox="0 0 180 262"><use href="#crest"/></svg><span class="back__code">DP-700</span><span class="back__series">Series 2026</span></div></div>
+            </div>
+            <button class="card__hit" type="button" aria-expanded="false" aria-label="Zoom the card: Pipethon"></button>
+          </article>
+        </div></li>
+
+        <li class="slot slot--blue" data-slot="3" data-face-up><div class="fly">
+          <article class="card card--mon card--polyglot" aria-labelledby="c4-title" style="--c-light:#8fdcff;--c:#00a4ef;--c-dark:#0071a8;--c-ink:#002e47;--art-y:40%">
+            <div class="card__tilt tiltable">
+              <div class="card__face">
+                <div class="card__frame"></div>
+                <div class="mon">
+                  <header class="mon__head">
+                    <p class="mon__stage"><span>Stage 1</span> Evolves from <em>Excel Macro</em></p>
+                    <div class="mon__title">
+                      <h2 class="mon__name" id="c4-title">Parrquet</h2>
+                      <p class="cu cu--all" aria-label="Used across all 3 domains"><small>Used across</small><b>all 3 domains</b></p>
+                      <span class="mon__type" title="Code type"><svg class="type" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-code"/></svg></span>
+                    </div>
+                  </header>
+                  <div class="mon__art">
+                    <img src="assets/art/polyglot.webp" alt="" width="1280" height="853" decoding="sync">
+                    <div class="foil foil--art"></div>
+                    <div class="glitter"></div>
+                    <div class="glare"></div>
+                  </div>
+                  <p class="mon__strip">Languages · PySpark, SQL and KQL</p>
+                  <ul class="mon__attacks">
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 1 Code"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-code"/></svg></i></span>
+                    <strong class="attack__name">Right Tool</strong>
+                    <p class="attack__text">Picks dataflows, notebooks or T-SQL, whichever the job needs.</p>
+                  </li>
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 2 Code"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-code"/></svg></i><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-code"/></svg></i></span>
+                    <strong class="attack__name">Triple Query</strong>
+                    <p class="attack__text">Transforms data with PySpark, SQL and KQL, batch or streaming.</p>
+                  </li>
+                  </ul>
+                  <dl class="mon__stats">
+                    <div><dt>weakness</dt><dd>tabs vs spaces</dd></div>
+                    <div><dt>resistance</dt><dd>Excel exports</dd></div>
+                    <div><dt>retreat</dt><dd aria-label="3 coffee"><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg></dd></div>
+                  </dl>
+                  <p class="mon__flavour">Speaks PySpark, T-SQL and KQL, and knows which one the job needs.</p>
+                  <footer class="mon__foot">
+                    <span>Illus. Juan Mallo · Gen-AI</span>
+                    <span class="mon__set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l5 10-5 10-5-10z"/></svg>Rare · 4/5</span>
+                  </footer>
+                </div>
+                <div class="glare glare--soft"></div>
+              </div>
+              <div class="card__back" aria-hidden="true"><div class="back__topo"></div><div class="back__line"></div><div class="back__mark"><svg class="back__shield" viewBox="0 0 180 262"><use href="#crest"/></svg><span class="back__code">DP-700</span><span class="back__series">Series 2026</span></div></div>
+            </div>
+            <button class="card__hit" type="button" aria-expanded="false" aria-label="Zoom the card: Parrquet"></button>
+          </article>
+        </div></li>
+
+        <li class="slot slot--yellow" data-slot="4" data-face-up><div class="fly">
+          <article class="card card--mon card--watcher" aria-labelledby="c5-title" style="--c-light:#ffe28a;--c:#ffb900;--c-dark:#c98900;--c-ink:#4d3300;--art-y:0%">
+            <div class="card__tilt tiltable">
+              <div class="card__face">
+                <div class="card__frame"></div>
+                <div class="mon">
+                  <header class="mon__head">
+                    <p class="mon__stage"><span>Stage 1</span> Evolves from <em>print()</em></p>
+                    <div class="mon__title">
+                      <h2 class="mon__name" id="c5-title">Meertric</h2>
+                      <p class="cu" aria-label="Exam weight: 30 to 35 percent"><small>CU</small><b>30–35</b><i>%</i></p>
+                      <span class="mon__type" title="Monitor type"><svg class="type" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-monitor"/></svg></span>
+                    </div>
+                  </header>
+                  <div class="mon__art">
+                    <img src="assets/art/watcher.webp" alt="" width="1280" height="853" decoding="sync">
+                    <div class="foil foil--art"></div>
+                    <div class="glitter"></div>
+                    <div class="glare"></div>
+                  </div>
+                  <p class="mon__strip">Domain 3 · Monitor and optimize an analytics solution</p>
+                  <ul class="mon__attacks">
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 1 Monitor"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-monitor"/></svg></i></span>
+                    <strong class="attack__name">Alert Call</strong>
+                    <p class="attack__text">Monitors ingestion, transformation and semantic model refresh, and raises the alarm.</p>
+                  </li>
+                  <li class="attack">
+                    <span class="attack__cost" aria-label="Cost: 2 Monitor"><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-monitor"/></svg></i><i class="cost"><svg class="cost__glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="#type-monitor"/></svg></i></span>
+                    <strong class="attack__name">Tune Up</strong>
+                    <p class="attack__text">Resolves pipeline, notebook and T-SQL errors, then optimizes lakehouse tables, Spark and queries.</p>
+                  </li>
+                  </ul>
+                  <dl class="mon__stats">
+                    <div><dt>weakness</dt><dd>silent failures</dd></div>
+                    <div><dt>resistance</dt><dd>“works on my machine”</dd></div>
+                    <div><dt>retreat</dt><dd aria-label="1 coffee"><svg class="cup" viewBox="0 0 24 24"><use href="#cup"/></svg></dd></div>
+                  </dl>
+                  <p class="mon__flavour">Spots the failed refresh before anyone else does.</p>
+                  <footer class="mon__foot">
+                    <span>Illus. Juan Mallo · Gen-AI</span>
+                    <span class="mon__set"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l5 10-5 10-5-10z"/></svg>Rare · 5/5</span>
+                  </footer>
+                </div>
+                <div class="glare glare--soft"></div>
+              </div>
+              <div class="card__back" aria-hidden="true"><div class="back__topo"></div><div class="back__line"></div><div class="back__mark"><svg class="back__shield" viewBox="0 0 180 262"><use href="#crest"/></svg><span class="back__code">DP-700</span><span class="back__series">Series 2026</span></div></div>
+            </div>
+            <button class="card__hit" type="button" aria-expanded="false" aria-label="Zoom the card: Meertric"></button>
+          </article>
+        </div></li>
+      </ol>
+    </section>
+
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+    <!-- Recording only (?auto=1): a power-on intro and an end card with the address. -->
+    <div class="crt" aria-hidden="true"><i class="crt__flash"></i><i class="crt__scan"></i><i class="crt__top"></i><i class="crt__bot"></i><i class="crt__line"></i></div>
+    <div class="endcard" aria-hidden="true">
+      <span class="endcard__kicker"><i class="endcard__play">▶</i> Open your own pack</span>
+      <b class="endcard__url">dp700-pack</b>
+      <span class="endcard__domain">.pages.dev</span>
+    </div>
+
+    <!-- Sound toggle: muted by default; hidden until JS is ready, and in ?auto. -->
+    <button class="sound" id="sound" type="button" aria-pressed="false" aria-label="Turn sound on" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path class="sound__body" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/>
+        <path class="sound__waves" d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11"/>
+        <path class="sound__off" d="M16 9.5l5 5M21 9.5l-5 5"/>
+      </svg>
+    </button>
+
+    <footer class="credits" id="credits">
+      <ul class="credits__list">
+        <li><span class="credits__k">Built by</span><span>Juan Mallo with Claude Code</span></div></li>
+        <li><span class="credits__k">Idea inspired by</span><span>holo.yashb.xyz by <a href="https://x.com/Yassshhu" rel="noopener">@Yassshhu</a></span></div></li>
+        <li><span class="credits__k">Voucher</span><span>Aleksi &amp; Fabric Forge</span></div></li>
+        <li><span class="credits__k">Content based on</span><span><a href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/dp-700" rel="noopener">the official DP-700 study guide</a></span></div></li>
+      </ul>
+      <a class="credits__home" href="https://juanos.pages.dev" rel="noopener">juanos.pages.dev <span aria-hidden="true">↗</span></a>
+    </footer>
+  </main>
+
+  <!-- Shared symbols. The star echoes the two stars on the badge (our own drawing). -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 1.8l2.95 7.1 7.65.6-5.83 4.98 1.8 7.47L12 17.9l-6.57 4.05 1.8-7.47L1.4 9.5l7.65-.6z"/>
+    </symbol>
+    <!-- Type icons for the colour cards: one solid-glyph system on a 24 grid,
+         optically centred, used identically in the header and the attack costs. -->
+    <symbol id="type-governance" viewBox="0 0 24 24">
+      <path fill="currentColor" fill-rule="evenodd" d="M12 2 20 5v6.2c0 5.1-3.3 8.9-8 10.8-4.7-1.9-8-5.7-8-10.8V5zm0 6.2a2.3 2.3 0 0 0-1.3 4.2L10 16.6h4l-.7-4.2A2.3 2.3 0 0 0 12 8.2z"/>
+    </symbol>
+    <symbol id="type-pipeline" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M3 6.5h9.5A5.5 5.5 0 0 1 18 12v3.5h-4V12a1.5 1.5 0 0 0-1.5-1.5H3z"/>
+      <path fill="currentColor" d="M2 5h2.2v7H2zM12.5 15h7v2.2h-7zM16 18.6l-3.6-.1L16 22l3.6-3.5z"/>
+    </symbol>
+    <symbol id="type-code" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M8.5 4.5C6.2 4.5 6.2 6 6.2 8s-.4 3.2-2.2 4c1.8.8 2.2 2 2.2 4s0 3.5 2.3 3.5M15.5 4.5c2.3 0 2.3 1.5 2.3 3.5s.4 3.2 2.2 4c-1.8.8-2.2 2-2.2 4s0 3.5-2.3 3.5"/>
+    </symbol>
+    <symbol id="type-monitor" viewBox="0 0 24 24">
+      <path fill="currentColor" fill-rule="evenodd" d="M12 5c5.4 0 9 4.6 10 7-1 2.4-4.6 7-10 7S3 14.4 2 12c1-2.4 4.6-7 10-7zm0 3.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6z"/>
+      <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+    </symbol>
+    <symbol id="cup" viewBox="0 0 24 24">
+      <path d="M4 9h12v4.5A5.5 5.5 0 0 1 10.5 19h-1A5.5 5.5 0 0 1 4 13.5z" fill="currentColor"/>
+      <path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M8 3.5c-.8 1 .8 2 0 3M12 3.5c-.8 1 .8 2 0 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+    <!-- Card-back crest: same shape as the pack's shield. -->
+    <linearGradient id="backCrestFill" x1="0" y1="0" x2=".35" y2="1">
+      <stop offset="0" stop-color="#2a8ae0"/><stop offset=".45" stop-color="#0064b5"/><stop offset="1" stop-color="#002a66"/>
+    </linearGradient>
+    <symbol id="crest" viewBox="0 0 180 262">
+      <path d="M90 6 170 30Q175 31.6 175 37V170C175 219 90 255 90 255S5 219 5 170V37Q5 31.6 10 30Z" fill="url(#backCrestFill)" stroke="#fff" stroke-width="7"/>
+      <use href="#star" x="28" y="112" width="58" height="58" fill="#fff"/>
+      <use href="#star" x="94" y="112" width="58" height="58" fill="#fff"/>
+    </symbol>
+  </svg>
+</body>
+</html>

@@ -1,0 +1,406 @@
+/* ==========================================================================
+   base.css — fonts, colour tokens, page stage and the responsive card layout.
+   ========================================================================== */
+
+/* Self-hosted, subset fonts (see tools/fonts.mjs). */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("../assets/fonts/space-grotesk.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+/* IBM Plex Mono: IBM's own official WOFF2 split files, unmodified (the
+   OFL reserves the name "Plex", so we must not ship our own subsets).
+   Latin-1 covers the text; "Pi" (arrows) only downloads if used. */
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/IBMPlexMono-Regular-Latin1.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030, U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/IBMPlexMono-Regular-Pi.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+2190-2199;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/IBMPlexMono-Medium-Latin1.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030, U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/IBMPlexMono-Medium-Pi.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+2190-2199;
+}
+
+/* "Caps" variants of the same files with symmetric metrics around the cap
+   height (IBM Plex Mono caps = .698em, Space Grotesk ≈ .70em): text in pills and
+   badges then centres vertically on every browser, no magic padding. */
+@font-face {
+  font-family: "Mono Caps";
+  src: url("../assets/fonts/IBMPlexMono-Medium-Latin1.woff2") format("woff2");
+  font-weight: 500;
+  ascent-override: 84.9%; descent-override: 15.1%; line-gap-override: 0%;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030, U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
+}
+@font-face {
+  font-family: "Mono Caps";
+  src: url("../assets/fonts/IBMPlexMono-Medium-Pi.woff2") format("woff2");
+  font-weight: 500;
+  ascent-override: 84.9%; descent-override: 15.1%; line-gap-override: 0%;
+  font-display: swap;
+  unicode-range: U+2190-2199;
+}
+@font-face {
+  font-family: "Grotesk Caps";
+  src: url("../assets/fonts/space-grotesk.woff2") format("woff2");
+  font-weight: 300 700;
+  ascent-override: 85%; descent-override: 15%; line-gap-override: 0%;
+  font-display: swap;
+}
+
+/* Tear progress (0 → 1). Registered so the Web Animations API can tween it. */
+@property --tear {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  /* Badge palette */
+  --blue: #0064b5;
+  --navy: #002050;
+  --grey: #505050;
+  --char: #282828;
+  --white: #ffffff;
+
+  /* Page */
+  --bg: #040b18;
+  --ink: #e8f0fb;
+  --ink-dim: #8ea3bf;
+
+  --sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  /* Layout */
+  --pad: clamp(16px, 3.5vmin, 48px);   /* outer page padding */
+  --g: clamp(10px, 2.2vmin, 28px);     /* gap between cards */
+  --R: 0.7159;                         /* card width / height (63 × 88 mm) */
+  --foot: 96px;                        /* room kept for the credits footer */
+  --air: .86;                          /* cards use 86% of the room: the page breathes */
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;            /* the experience is a single, fixed stage */
+  overscroll-behavior: none;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── Stage ───────────────────────────────────────────────────────────── */
+
+.stage {
+  position: relative;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--pad) var(--pad) calc(var(--pad) + var(--foot));
+  isolation: isolate;
+  /* clip (not hidden): things flying off-screen (strip, pack) must never grow
+     the layout viewport, or mobile browsers zoom the page out. */
+  overflow: clip;
+  /* Deep navy room with a soft blue spotlight behind the pack/cards. */
+  background:
+    radial-gradient(60% 50% at 50% 42%, rgb(0 100 181 / .30), transparent 70%),
+    radial-gradient(120% 90% at 50% 0%, #0a1d3a 0%, transparent 60%),
+    var(--bg);
+}
+
+/* Fine dot grid, faded towards the edges. */
+.stage::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background-image: radial-gradient(rgb(255 255 255 / .07) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(80% 70% at 50% 45%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(80% 70% at 50% 45%, #000 30%, transparent 100%);
+}
+
+/* Pack and cards share the same grid cell, so both are centred on the stage. */
+.pack-wrap, .spread { grid-area: 1 / 1; }
+
+/* ── Card layout ─────────────────────────────────────────────────────────
+   One size, --H, drives everything: the badge card is H tall, and the 2×2
+   grid of colour cards is also H tall. Landscape puts them side by side;
+   portrait stacks the badge above the grid.                                */
+
+.spread {
+  --H: calc(var(--air) * min(
+    calc(100dvh - 2 * var(--pad) - var(--foot)),
+    calc((100vw - 2 * var(--pad) - 5 * var(--g)) / (2 * var(--R)))
+  ));
+  --bw: calc(var(--H) * var(--R));            /* badge width          */
+  --sh: calc((var(--H) - var(--g)) / 2);      /* small card height    */
+  --sw: calc(var(--sh) * var(--R));           /* small card width     */
+  position: relative;
+  z-index: 1;
+}
+
+.cards {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  gap: var(--g);
+  /* The spacer column triples the gap between the badge and the grid. */
+  grid-template-columns: var(--bw) var(--g) var(--sw) var(--sw);
+  grid-template-rows: var(--sh) var(--sh);
+  grid-template-areas:
+    "badge . red  green"
+    "badge . blue yellow";
+}
+
+.slot { position: relative; }
+/* Inner wrapper: during the deal the slot moves on X, .fly on Y + scale +
+   rotation. Splitting them keeps X out of the scaled coordinate space. */
+.fly { position: absolute; inset: 0; }
+.slot--badge  { grid-area: badge; z-index: 5; }
+.slot--red    { grid-area: red;    z-index: 4; }
+.slot--green  { grid-area: green;  z-index: 3; }
+.slot--blue   { grid-area: blue;   z-index: 2; }
+.slot--yellow { grid-area: yellow; z-index: 1; }
+.slot.is-zoomed { z-index: 60; }
+
+/* Stacked layout (badge on top, 2×2 below): chosen in index.html's head
+   script whenever it gives bigger cards than the side-by-side layout, not
+   just by aspect ratio (a half-width desktop window stays side by side). */
+:root.is-stack { --foot: 120px; --air: .9; }
+.is-stack {
+  & .spread {
+    --H: calc(var(--air) * min(
+      calc((100dvh - 2 * var(--pad) - var(--foot) - 4 * var(--g)) / 2),
+      calc((100vw - 2 * var(--pad)) / var(--R))
+    ));
+  }
+  & .cards {
+    grid-template-columns: var(--sw) var(--sw);
+    grid-template-rows: var(--H) var(--g) var(--sh) var(--sh);
+    grid-template-areas:
+      "badge badge"
+      ".     ."
+      "red   green"
+      "blue  yellow";
+  }
+  & .slot--badge { justify-self: center; width: var(--bw); }
+}
+@media (max-width: 480px) { :root { --air: .94; } }
+
+/* Before the pack is opened the cards are hidden; the deal animation takes over. */
+.spread:not(.is-open) .slot { opacity: 0; }
+
+/* ── Zoom backdrop ───────────────────────────────────────────────────── */
+
+.backdrop {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgb(2 8 20 / .72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+}
+.spread.has-zoom .backdrop { pointer-events: auto; }
+
+/* Zoom layer: the zoomed card (js/zoom.js) or, when recording, the zoomed
+   copy of the badge card (scheduleAuto). Card coordinates = viewport. */
+.zoom-layer { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.zoom-layer .card { position: absolute; pointer-events: auto; } /* the layer ignores the pointer, the card doesn't (tilt + holo, click to close) */
+.zoom-layer[aria-hidden] .card { pointer-events: none; }           /* the recording copy */
+
+/* ── Confetti canvas ─────────────────────────────────────────────────── */
+
+.confetti {
+  position: fixed; inset: 0; z-index: 70;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ── Credits footer ──────────────────────────────────────────────────────
+   A quiet "spec strip": tiny mono labels above each credit, thin dividers,
+   and the portfolio link as its own small pill.                          */
+
+.credits {
+  position: absolute; left: 50%; bottom: calc(var(--pad) * .9);
+  translate: -50% 0;
+  width: min(94vw, 1080px);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 14px 22px;
+  color: var(--ink);
+  opacity: 0;                 /* revealed at the end of the deal */
+}
+.credits__list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+.credits__list li {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 0 20px;
+  font: 400 13px/1.25 var(--sans);
+  color: #d3e2f3;
+  white-space: nowrap;
+}
+.credits__list li + li { border-left: 1px solid rgb(255 255 255 / .12); }
+.credits__k {
+  font: 500 9.5px/1 var(--mono);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #6f8cb0;
+}
+.credits a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgb(116 234 194 / .5);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.credits a:hover { text-decoration-color: #74eac2; }
+.credits .credits__home {
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1px solid rgb(255 255 255 / .18);
+  background: rgb(255 255 255 / .04);
+  font: 500 11.5px/1 var(--mono);
+  letter-spacing: .06em;
+  text-decoration: none;
+  color: #d3e2f3;
+  transition: border-color .2s, color .2s;
+}
+.credits .credits__home:hover { border-color: #74eac2; color: #fff; }
+
+/* When the four credits no longer fit on one line: a tidy 2 × 2 grid with
+   the link underneath (instead of a ragged wrap). Room is reserved for it. */
+@media (max-width: 1240px) {
+  :root { --foot: 146px; }
+  .credits { flex-direction: column; gap: 24px; }   /* the link breathes below the credits */
+  .credits__list { display: grid; grid-template-columns: auto auto; row-gap: 12px; }
+  .credits__list li { padding: 0 22px; }
+  .credits__list li + li { border-left: 0; }
+  .credits__list li:nth-child(even) { border-left: 1px solid rgb(255 255 255 / .12); }
+}
+:root.is-stack { --foot: 150px; }
+@media (max-width: 760px) {
+  .credits { gap: 18px; }
+  .credits__list { row-gap: 10px; }
+  .credits__list li { padding: 0 12px; font-size: 11px; white-space: normal; }
+  .credits__k { font-size: 8.5px; }
+  .credits .credits__home { padding: 6px 12px; font-size: 10.5px; }
+}
+@media (max-width: 480px) { :root.is-stack { --foot: 120px; } }
+
+/* ── Sound toggle ────────────────────────────────────────────────────── */
+
+.sound {
+  position: fixed; z-index: 80;
+  top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right));
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / .18);
+  background: rgb(8 20 40 / .55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #cfe3f8;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.sound[hidden] { display: none; }
+.sound:hover { border-color: #74eac2; color: #fff; }
+.sound svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sound__body { fill: currentColor; stroke: none; }
+.sound__waves { display: none; }
+.sound[aria-pressed="true"] { color: #74eac2; border-color: rgb(116 234 194 / .5); }
+.sound[aria-pressed="true"] .sound__waves { display: inline; }
+.sound[aria-pressed="true"] .sound__off { display: none; }
+.is-auto .sound { display: none; }
+
+/* ── Recording-only extras (?auto=1) ─────────────────────────────────── */
+
+.crt, .endcard { display: none; }
+
+/* Power-on intro (old TV / arcade): a line, then the picture opens up and
+   down from it. The shutters' inner edges glow like the line that split. */
+.is-auto .crt { display: block; position: fixed; inset: 0; z-index: 100; pointer-events: none; }
+.crt > i { position: absolute; left: 0; right: 0; }
+.crt__top, .crt__bot { height: 50.5%; background: #01040b; }
+.crt__top { top: 0; box-shadow: 0 2px 0 rgb(223 252 243 / .9), 0 6px 26px rgb(116 234 194 / .55); }
+.crt__bot { bottom: 0; box-shadow: 0 -2px 0 rgb(223 252 243 / .9), 0 -6px 26px rgb(116 234 194 / .55); }
+.crt__line {
+  top: 50%; height: 4px; translate: 0 -50%;
+  background: linear-gradient(90deg, transparent, #f2fffb 12% 88%, transparent);
+  box-shadow: 0 0 22px 5px rgb(116 234 194 / .85), 0 0 70px 14px rgb(0 164 239 / .45);
+}
+/* The freshly lit picture: overexposed, with scan lines, settling down. */
+.crt__flash { inset: 0; background: radial-gradient(120% 60% at 50% 50%, #e9fff8, rgb(160 220 255 / .5)); mix-blend-mode: screen; opacity: 0; }
+.crt__scan { inset: 0; background: repeating-linear-gradient(180deg, rgb(0 0 0 / .45) 0 2px, transparent 2px 5px); opacity: 0; }
+
+/* End card: the address as a holographic title, arcade style. */
+.is-auto .endcard {
+  display: flex; flex-direction: column; align-items: center;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+  padding: 120px 16px calc(var(--pad) + 4px);
+  background: linear-gradient(180deg, transparent, rgb(2 7 18 / .9) 40%);
+  opacity: 0;
+  pointer-events: none;
+}
+.endcard__kicker {
+  display: flex; align-items: center; gap: .7em;
+  margin-bottom: 14px;
+  font: 500 clamp(12px, 1.7vmin, 19px)/1 var(--mono);
+  letter-spacing: .26em; text-transform: uppercase;
+  color: #bff5e6;
+}
+.endcard__play { font-style: normal; font-size: .85em; color: #74eac2; }
+.endcard__url {
+  font: 700 clamp(40px, 9.5vmin, 120px)/.9 var(--sans);
+  letter-spacing: -.045em;
+  color: transparent;
+  background: linear-gradient(100deg, #ffd9ef, #c9f1ff 16%, #74eac2 30%, #fff2c2 46%, #e6d6ff 62%, #c9f1ff 78%, #ffd9ef) 0 50% / 300% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 0 22px rgb(116 234 194 / .35)) drop-shadow(0 4px 0 rgb(0 32 80 / .9));
+}
+.endcard__domain {
+  margin-top: 10px;
+  padding: .45em 1em;
+  border-radius: 99px;
+  border: 1.5px solid rgb(116 234 194 / .55);
+  font: 500 clamp(14px, 2.4vmin, 30px)/1 var(--mono);
+  letter-spacing: .08em;
+  color: #e9fff8;
+  background: rgb(116 234 194 / .08);
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible { outline: 2px solid #74eac2; outline-offset: 4px; border-radius: 6px; }
+
+/* Recording mode: no cursor, no hints. */
+.is-auto, .is-auto * { cursor: none !important; }
+.is-auto .hint { display: none; }

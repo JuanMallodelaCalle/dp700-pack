@@ -1,0 +1,107 @@
+/* ==========================================================================
+   foil.css — the holographic effect.
+
+   Every foil surface is a stack of plain CSS layers on top of the artwork:
+     .foil     a rainbow band pattern, blended with `color-dodge`, that slides
+               as the light (--mx / --my) moves: the "holo".
+     .glitter  a sparse sparkle texture (SVG turbulence, thresholded), lit only
+               around the light spot.
+     .glare    a soft white hotspot that follows the light, blended `overlay`.
+
+   JS never touches pixels: it only writes five custom properties per frame
+   on the tilt element (--rx, --ry, --mx, --my, --hyp). --hyp is 0 at rest and
+   ~1 when the card is tilted hard, so the effect breathes with the motion.
+   ========================================================================== */
+
+.foil, .glitter, .glare {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* ── Rainbow holo ────────────────────────────────────────────────────── */
+
+.foil {
+  --base: .16;   /* opacity at rest     */
+  --gain: .45;   /* extra at full tilt  */
+  background-image: repeating-linear-gradient(
+    110deg,
+    hsl(340 95% 62%) 0%,
+    hsl(38 100% 60%) 3.6%,
+    hsl(95 85% 58%) 7.2%,
+    hsl(178 95% 55%) 10.8%,
+    hsl(222 95% 66%) 14.4%,
+    hsl(285 90% 66%) 18%,
+    hsl(340 95% 62%) 21.6%
+  );
+  background-size: 300% 300%;
+  background-position: var(--mx) var(--my);
+  mix-blend-mode: color-dodge;
+  filter: brightness(.62) contrast(1.35) saturate(1.25);
+  opacity: calc(var(--base) + var(--hyp) * var(--gain));
+}
+
+/* Whole card: gentle, so the text stays crisp and readable. */
+.foil--card { --base: .10; --gain: .32; z-index: 2; }
+
+/* Art window: the strongest holo on the card. */
+.foil--art { --base: .34; --gain: .5; border-radius: 0; }
+
+/* Ultra-rare extra: diagonal light bands sliding the opposite way. */
+.foil--bands {
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent 0 7%,
+    rgb(255 255 255 / .7) 8.5%,
+    transparent 10% 17%,
+    rgb(255 255 255 / .35) 18%,
+    transparent 19.5% 26%
+  );
+  background-size: 260% 260%;
+  background-position: calc(100% - var(--mx)) calc(100% - var(--my));
+  mix-blend-mode: overlay;
+  filter: none;
+  opacity: calc(.28 + var(--hyp) * .55);
+  border-radius: 0;
+}
+
+/* Pack: the wrapper is all foil, so the holo is stronger and wider. */
+.foil--pack {
+  /* Holo shows mainly where the light hits, not everywhere. */
+  --base: .14; --gain: .38;
+  background-size: 240% 240%;
+  -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my), #000 0%, rgb(0 0 0 / .45) 35%, rgb(0 0 0 / .2) 75%);
+          mask-image: radial-gradient(circle at var(--mx) var(--my), #000 0%, rgb(0 0 0 / .45) 35%, rgb(0 0 0 / .2) 75%);
+  z-index: 2;
+}
+
+/* ── Glitter ─────────────────────────────────────────────────────────── */
+
+.glitter {
+  /* Fractal noise thresholded into sparse white specks (alpha = 15·R − 9.3). */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 15 0 0 0 -9.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: color-dodge;
+  opacity: calc(.12 + var(--hyp) * .75);
+  /* Only sparkle near the light. */
+  -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my), #000 0%, rgb(0 0 0 / .35) 28%, transparent 62%);
+          mask-image: radial-gradient(circle at var(--mx) var(--my), #000 0%, rgb(0 0 0 / .35) 28%, transparent 62%);
+  z-index: 3;
+}
+
+/* ── Glare ───────────────────────────────────────────────────────────── */
+
+.glare {
+  background: radial-gradient(
+    farthest-corner circle at var(--mx) var(--my),
+    rgb(255 255 255 / .62) 0%,
+    rgb(255 255 255 / .16) 24%,
+    rgb(0 0 0 / .28) 95%
+  );
+  mix-blend-mode: overlay;
+  opacity: calc(.18 + var(--hyp) * .62);
+  z-index: 4;
+}
+
+/* Reduced motion: keep a still, gentle sheen. */
+.is-reduced .glitter { display: none; }

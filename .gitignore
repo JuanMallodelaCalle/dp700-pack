@@ -1,0 +1,8 @@
+node_modules/
+tools/out/
+tools/fonts-src/
+*.log
+tools/art-src/*.png
+video/
+tools/sfx/
+__pycache__/
