@@ -97,7 +97,7 @@ Owner: Juan Mallo, Data & AI Engineer, Madrid. GitHub: JuanMallodelaCalle. Portf
 
 ## The 5 cards (content must stay accurate to the official DP-700 study guide)
 
-**Source:** https://learn.microsoft.com/credentials/certifications/resources/study-guides/dp-700
+**Source:** https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-700
 
 The exam has 3 domains of 30–35% each. One creature card per domain (red, green,
 yellow), plus a blue card for the languages (PySpark, SQL, KQL). Do not invent numeric

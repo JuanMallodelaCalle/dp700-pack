@@ -128,7 +128,7 @@ node serve.mjs               # → http://127.0.0.1:5173  (?auto=1 = video mode)
   design were reused.
 - **Voucher:** Aleksi & Fabric Forge.
 - **Card content:** based on the
-  [official DP-700 study guide](https://learn.microsoft.com/credentials/certifications/resources/study-guides/dp-700).
+  [official DP-700 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-700).
   The only number on any card is the real exam weight (30–35%).
 - **Badge:** the official Microsoft Certified Associate badge, used by its
   holder. No other Microsoft or Fabric logos are used.
